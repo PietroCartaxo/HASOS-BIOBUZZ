@@ -14,7 +14,7 @@ public class TreinoQuadrado extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         double S = 24;   // lado do quadrado (polegadas)
-        double R = 8;    // raio das curvas (polegadas), precisa ser menor que S / 2
+        double R = 12;    // raio das curvas (polegadas), precisa ser menor que S / 2
 
         // Largada em (R, 0), apontado para a direita (heading 0)
         Pose2d start = new Pose2d(R, 0, 0);
