@@ -24,7 +24,7 @@ public class testShooter extends LinearOpMode {
             telemetry.update();
         }
 
-        // STOP: depois do while
+        // STOP: depois do while,0
         shooter.setPower(0);
     }
 }
