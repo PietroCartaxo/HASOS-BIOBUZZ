@@ -6,6 +6,8 @@ import com.acmerobotics.roadrunner.Rotation2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
@@ -13,8 +15,15 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 @TeleOp(name = "FieldCentric RR")
 public class FieldCentricRR extends LinearOpMode {
 
+
+    static final double POTENCIA = 0.5;
+
     @Override
     public void runOpMode() throws InterruptedException {
+
+        DcMotorEx shooter = hardwareMap.get(DcMotorEx.class, "shooter");
+        shooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        boolean ligado = false;
 
         MecanumDrive drive =
                 new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
@@ -57,6 +66,14 @@ public class FieldCentricRR extends LinearOpMode {
                             -gamepad1.right_stick_x
                     )
             );
+
+            if (gamepad1.a) ligado = true;   // A liga
+            if (gamepad1.b) ligado = false;  // B desliga
+
+            shooter.setPower(ligado ? POTENCIA : 0);
+
+            telemetry.addData("Ligado", ligado);
+            telemetry.addData("Potência", ligado ? POTENCIA : 0);
 
             telemetry.addData(
                     "Heading",
