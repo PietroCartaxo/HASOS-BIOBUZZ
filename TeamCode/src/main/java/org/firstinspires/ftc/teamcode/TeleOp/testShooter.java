@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 public class testShooter extends LinearOpMode {
 
     // 0.5 de potência ≈ 3000 RPM (metade dos 6000 RPM)
-    static final double POTENCIA = 0.58;
+    static final double POTENCIA = 0.5;
 
     @Override
     public void runOpMode() throws InterruptedException {
