@@ -74,7 +74,8 @@ public class FieldCentricRR extends LinearOpMode {
 
             telemetry.addData("Ligado", ligado);
             telemetry.addData("Potência", ligado ? POTENCIA : 0);
-
+            telemetry.addData("TPS", shooter.getVelocity());
+            telemetry.addData("RPM", shooter.getVelocity() / 28 * 60);
             telemetry.addData(
                     "Heading",
                     Math.toDegrees(botHeading.toDouble())
