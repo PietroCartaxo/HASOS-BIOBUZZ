@@ -23,7 +23,6 @@ public class FieldCentricRR extends LinearOpMode {
     static final double TICKS_PER_REV = 28;
     static final double TARGET_RPM = 2800;
 
-
     static double kF = 0.000352; // feedforward: potência por tick/s
     static final double kP = 0.001;    // proporcional: ponto de partida, ajustar no teste
     static final double kD = 0.0;      // derivativo: deixa 0 por enquanto
@@ -33,8 +32,16 @@ public class FieldCentricRR extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
+        // ---------- SHOOTER: 2 MOTORES ----------
         DcMotorEx shooter = hardwareMap.get(DcMotorEx.class, "shooter");
+        DcMotorEx shooter2 = hardwareMap.get(DcMotorEx.class, "shooter2");
+
         shooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        shooter2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        // Se os motores estiverem espelhados, descomente a linha abaixo:
+        // shooter2.setDirection(DcMotorEx.Direction.REVERSE);
+
         boolean ligado = false;
 
         double prevError = 0;
@@ -83,13 +90,13 @@ public class FieldCentricRR extends LinearOpMode {
             // ---------- INTAKE / TRANSFER ----------
             intT.setPower(gamepad1.left_trigger > 0.5 ? intTP : 0);
 
-            // ---------- SHOOTER COM PIDF ----------
+            // ---------- SHOOTER COM PIDF (2 MOTORES) ----------
             ligado = gamepad1.right_trigger > 0.5;
 
             double dt = timer.seconds();
             timer.reset();
 
-            double currentTPS = shooter.getVelocity();
+            double currentTPS = shooter.getVelocity(); // lê o encoder de um dos motores
             double targetTPS = TARGET_RPM / 60.0 * TICKS_PER_REV;
             double power = 0;
 
@@ -105,7 +112,9 @@ public class FieldCentricRR extends LinearOpMode {
                 primeiraVez = true; // zera o derivativo na próxima vez que ligar
             }
 
+            // manda a mesma potência para os dois motores
             shooter.setPower(power);
+            shooter2.setPower(power);
 
             // ---------- TELEMETRIA ----------
             telemetry.addData("Ligado: ", ligado);
