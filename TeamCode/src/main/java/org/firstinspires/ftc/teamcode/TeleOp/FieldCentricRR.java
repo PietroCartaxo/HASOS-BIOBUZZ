@@ -16,14 +16,15 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 @TeleOp(name = "FieldCentric RR")
 public class FieldCentricRR extends LinearOpMode {
 
+    // ---------- Intake/Shooter ---------
+    static final double intTP = 1.0;
+
     // ---------- SHOOTER ----------
     static final double TICKS_PER_REV = 28;
     static final double TARGET_RPM = 2800;
 
-    // ---------- Intake/Shooter ---------
-    static final double intTP = 1.0;
 
-    static final double kF = 0.000352; // feedforward: potência por tick/s
+    static double kF = 0.000352; // feedforward: potência por tick/s
     static final double kP = 0.001;    // proporcional: ponto de partida, ajustar no teste
     static final double kD = 0.0;      // derivativo: deixa 0 por enquanto
 
@@ -107,13 +108,13 @@ public class FieldCentricRR extends LinearOpMode {
             shooter.setPower(power);
 
             // ---------- TELEMETRIA ----------
-            telemetry.addData("Ligado", ligado);
-            telemetry.addData("RPM alvo", TARGET_RPM);
-            telemetry.addData("RPM atual", currentTPS / TICKS_PER_REV * 60.0);
-            telemetry.addData("TPS alvo", targetTPS);
-            telemetry.addData("TPS atual", currentTPS);
-            telemetry.addData("Potência", power);
-            telemetry.addData("Heading", Math.toDegrees(botHeading.toDouble()));
+            telemetry.addData("Ligado: ", ligado);
+            telemetry.addData("RPM alvo: ", TARGET_RPM);
+            telemetry.addData("RPM atual: ", currentTPS / TICKS_PER_REV * 60.0);
+            telemetry.addData("TPS alvo: ", targetTPS);
+            telemetry.addData("TPS atual: ", currentTPS);
+            telemetry.addData("Potência: ", power);
+            telemetry.addData("Heading: ", Math.toDegrees(botHeading.toDouble()));
             telemetry.update();
         }
     }
