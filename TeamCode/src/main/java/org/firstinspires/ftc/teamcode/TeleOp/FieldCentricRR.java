@@ -48,7 +48,7 @@ public class FieldCentricRR extends LinearOpMode {
         boolean primeiraVez = true;
         ElapsedTime timer = new ElapsedTime();
 
-        DcMotorEx intT = hardwareMap.get(DcMotorEx.class, "intT");
+//        DcMotorEx intT = hardwareMap.get(DcMotorEx.class, "intT");
 
         MecanumDrive drive =
                 new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
@@ -88,7 +88,7 @@ public class FieldCentricRR extends LinearOpMode {
             );
 
             // ---------- INTAKE / TRANSFER ----------
-            intT.setPower(gamepad1.left_trigger > 0.5 ? intTP : 0);
+//            intT.setPower(gamepad1.left_trigger > 0.5 ? intTP : 0);
 
             // ---------- SHOOTER COM PIDF (2 MOTORES) ----------
             ligado = gamepad1.right_trigger > 0.5;
