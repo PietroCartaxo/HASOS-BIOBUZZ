@@ -24,7 +24,7 @@ public class FieldCentricRR extends LinearOpMode {
     static final double TARGET_RPM = 2800;
 
     static double kF = 0.000352; // feedforward: potência por tick/s
-    static final double kP = 0.001;    // proporcional: ponto de partida, ajustar no teste
+    static final double kP = 0.0;    // proporcional: ponto de partida, ajustar no teste
     static final double kD = 0.0;      // derivativo: deixa 0 por enquanto
 
     static final double MAX_POWER = 0.6; // trava de segurança
