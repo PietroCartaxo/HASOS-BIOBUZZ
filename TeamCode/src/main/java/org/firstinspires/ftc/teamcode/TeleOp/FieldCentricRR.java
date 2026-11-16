@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -21,7 +22,7 @@ public class FieldCentricRR extends LinearOpMode {
 
     // ---------- SHOOTER ----------
     static final double TICKS_PER_REV = 28;
-    static final double TARGET_RPM = 3200;
+    static final double TARGET_RPM = 3600;
 
     static double kF = 0.000352; // feedforward: potência por tick/s
     static final double kP = 0.001;    // proporcional: ponto de partida, ajustar no teste
@@ -49,6 +50,7 @@ public class FieldCentricRR extends LinearOpMode {
         ElapsedTime timer = new ElapsedTime();
 
         DcMotorEx intT = hardwareMap.get(DcMotorEx.class, "intT");
+        intT.setDirection(DcMotorEx.Direction.REVERSE);
 
         MecanumDrive drive =
                 new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
