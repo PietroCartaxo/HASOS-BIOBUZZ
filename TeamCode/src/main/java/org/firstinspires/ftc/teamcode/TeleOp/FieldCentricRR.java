@@ -19,7 +19,7 @@ public class FieldCentricRR extends LinearOpMode {
 
         // ---------- SUBSYSTEMS ----------
         Shooter shooter = new Shooter(hardwareMap);
-        IntT intake = new IntT(hardwareMap);
+        IntT intT = new IntT(hardwareMap);
 
         MecanumDrive drive =
                 new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
@@ -59,8 +59,8 @@ public class FieldCentricRR extends LinearOpMode {
             );
 
             // ---------- INTAKE / TRANSFER ----------
-            if (gamepad1.left_trigger > 0.5) intake.ligar();
-            else intake.desligar();
+            if (gamepad1.left_trigger > 0.5) intT.ligar();
+            else intT.desligar();
 
             // ---------- SHOOTER ----------
             if (gamepad1.right_trigger > 0.5) shooter.ligar();
