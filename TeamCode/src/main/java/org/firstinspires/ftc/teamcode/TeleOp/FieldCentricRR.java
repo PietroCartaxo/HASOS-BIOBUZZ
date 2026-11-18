@@ -6,51 +6,20 @@ import com.acmerobotics.roadrunner.Rotation2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Subsystems.IntT;
+import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 
 @TeleOp(name = "FieldCentric RR")
 public class FieldCentricRR extends LinearOpMode {
 
-    // ---------- Intake/Shooter ---------
-    static final double intTP = 1.0;
-
-    // ---------- SHOOTER ----------
-    static final double TICKS_PER_REV = 28;
-    static final double TARGET_RPM = 3600;
-
-    static double kF = 0.000352; // feedforward: potência por tick/s
-    static final double kP = 0.001;    // proporcional: ponto de partida, ajustar no teste
-    static final double kD = 0.0;      // derivativo: deixa 0 por enquanto
-
-    static final double MAX_POWER = 0.6; // trava de segurança
-
     @Override
     public void runOpMode() throws InterruptedException {
 
-        // ---------- SHOOTER: 2 MOTORES ----------
-        DcMotorEx shooter = hardwareMap.get(DcMotorEx.class, "shooter");
-        DcMotorEx shooter2 = hardwareMap.get(DcMotorEx.class, "shooter2");
-
-        shooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        shooter2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        // Se os motores estiverem espelhados, descomente a linha abaixo:
-        // shooter2.setDirection(DcMotorEx.Direction.REVERSE);
-
-        boolean ligado = false;
-
-        double prevError = 0;
-        boolean primeiraVez = true;
-        ElapsedTime timer = new ElapsedTime();
-
-        DcMotorEx intT = hardwareMap.get(DcMotorEx.class, "intT");
-        intT.setDirection(DcMotorEx.Direction.REVERSE);
+        // ---------- SUBSYSTEMS ----------
+        Shooter shooter = new Shooter(hardwareMap);
+        IntT intake = new IntT(hardwareMap);
 
         MecanumDrive drive =
                 new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
@@ -58,8 +27,8 @@ public class FieldCentricRR extends LinearOpMode {
         double offset = 0;
 
         waitForStart();
-        timer.reset();
 
+        // ---------- LOOP ----------
         while (opModeIsActive()) {
 
             // ---------- DRIVER ----------
@@ -90,42 +59,19 @@ public class FieldCentricRR extends LinearOpMode {
             );
 
             // ---------- INTAKE / TRANSFER ----------
-            intT.setPower(gamepad1.left_trigger > 0.5 ? intTP : 0);
+            if (gamepad1.left_trigger > 0.5) intake.ligar();
+            else intake.desligar();
 
-            // ---------- SHOOTER COM PIDF (2 MOTORES) ----------
-            ligado = gamepad1.right_trigger > 0.5;
-
-            double dt = timer.seconds();
-            timer.reset();
-
-            double currentTPS = shooter.getVelocity(); // lê o encoder de um dos motores
-            double targetTPS = TARGET_RPM / 60.0 * TICKS_PER_REV;
-            double power = 0;
-
-            if (ligado) {
-                double error = targetTPS - currentTPS;
-                double derivative = (primeiraVez || dt <= 0) ? 0 : (error - prevError) / dt;
-                prevError = error;
-                primeiraVez = false;
-
-                power = kF * targetTPS + kP * error + kD * derivative;
-                power = Range.clip(power, 0.0, MAX_POWER);
-            } else {
-                primeiraVez = true; // zera o derivativo na próxima vez que ligar
-            }
-
-            // manda a mesma potência para os dois motores
-            shooter.setPower(power);
-            shooter2.setPower(power);
+            // ---------- SHOOTER ----------
+            if (gamepad1.right_trigger > 0.5) shooter.ligar();
+            else shooter.desligar();
+            shooter.update();   // sem essa linha o shooter não faz nada
 
             // ---------- TELEMETRIA ----------
-            telemetry.addData("Ligado: ", ligado);
-            telemetry.addData("RPM alvo: ", TARGET_RPM);
-            telemetry.addData("RPM atual: ", currentTPS / TICKS_PER_REV * 60.0);
-            telemetry.addData("TPS alvo: ", targetTPS);
-            telemetry.addData("TPS atual: ", currentTPS);
-            telemetry.addData("Potência: ", power);
-            telemetry.addData("Heading: ", Math.toDegrees(botHeading.toDouble()));
+            telemetry.addData("RPM alvo", Shooter.TARGET_RPM);
+            telemetry.addData("RPM atual", shooter.getRPM());
+            telemetry.addData("Potência shooter", shooter.getPower());
+            telemetry.addData("Heading", Math.toDegrees(botHeading.toDouble()));
             telemetry.update();
         }
     }
