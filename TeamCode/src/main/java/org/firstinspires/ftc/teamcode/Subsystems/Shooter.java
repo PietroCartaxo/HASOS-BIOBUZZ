@@ -12,7 +12,7 @@ public class Shooter {
 
     // ---------- SHOOTER ----------
     private static final double TICKS_PER_REV = 28;
-    public static final double TARGET_RPM = 3600;
+    public static final double TARGET_RPM = 2500;
 
     private static final double kF = 0.000352; // feedforward: potência por tick/s
     private static final double kP = 0.001;    // proporcional: ajustar no teste
