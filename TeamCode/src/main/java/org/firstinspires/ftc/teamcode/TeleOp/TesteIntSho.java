@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Subsystems.IntT;
@@ -14,6 +14,7 @@ public class TesteIntSho extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Shooter shooter = new Shooter(hardwareMap);
         IntT intT = new IntT(hardwareMap);
+        FtcDashboard dashboard = FtcDashboard.getInstance();
         waitForStart();
 
         while (opModeIsActive()){
