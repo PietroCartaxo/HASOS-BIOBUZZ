@@ -21,8 +21,7 @@ public class FieldCentricRR extends LinearOpMode {
         Shooter shooter = new Shooter(hardwareMap);
         IntT intT = new IntT(hardwareMap);
 
-        MecanumDrive drive =
-                new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
         double offset = 0;
 
@@ -34,44 +33,22 @@ public class FieldCentricRR extends LinearOpMode {
             // ---------- DRIVER ----------
             drive.updatePoseEstimate();
 
-            if (gamepad1.options) {
-                offset = drive.localizer.getPose().heading.toDouble();
-            }
+            if (gamepad1.options) {offset = drive.localizer.getPose().heading.toDouble();}
 
-            Vector2d input = new Vector2d(
-                    -gamepad1.left_stick_y,
-                    -gamepad1.left_stick_x
-            );
+            Vector2d input = new Vector2d(-gamepad1.left_stick_y, -gamepad1.left_stick_x);
 
-            Rotation2d botHeading =
-                    Rotation2d.exp(
-                            drive.localizer.getPose().heading.toDouble()
-                                    - offset
-                    );
+            Rotation2d botHeading = Rotation2d.exp(drive.localizer.getPose().heading.toDouble() - offset);
 
             Vector2d rotated = botHeading.inverse().times(input);
 
-            drive.setDrivePowers(
-                    new PoseVelocity2d(
-                            rotated,
-                            -gamepad1.right_stick_x
-                    )
-            );
+            drive.setDrivePowers(new PoseVelocity2d(rotated, -gamepad1.right_stick_x));
 
-            // ---------- INTAKE / TRANSFER ----------
-            if (gamepad1.left_trigger > 0.5) intT.ligar();
-            else intT.desligar();
-
-            // ---------- SHOOTER ----------
-            if (gamepad1.right_trigger > 0.5) shooter.ligar();
-            else shooter.desligar();
-            shooter.update();   // sem essa linha o shooter não faz nada
 
             // ---------- TELEMETRIA ----------
-            telemetry.addData("RPM alvo", Shooter.TARGET_RPM);
-            telemetry.addData("RPM atual", shooter.getRPM());
-            telemetry.addData("Potência shooter", shooter.getPower());
-            telemetry.addData("Heading", Math.toDegrees(botHeading.toDouble()));
+            telemetry.addData("RPM alvo: ", Shooter.TARGET_RPM);
+            telemetry.addData("RPM atual: ", shooter.getRPM());
+            telemetry.addData("Potência shooter: ", shooter.getPower());
+            telemetry.addData("Ângulação: ", Math.toDegrees(botHeading.toDouble()));
             telemetry.update();
         }
     }
