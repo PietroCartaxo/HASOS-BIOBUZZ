@@ -14,7 +14,7 @@ public class TesteShooter extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            if (gamepad1.right_trigger > 0.5) shooter.ligar();
+            if (gamepad1.right_trigger > 0.1) shooter.ligar();
             else shooter.desligar();
             shooter.update();
 

@@ -11,7 +11,7 @@ public class IntT {
     static final double intTP = 1.0;
     public IntT(HardwareMap hardwareMap){
         intT = hardwareMap.get(DcMotorEx.class, "intT");
-        intT.setDirection(DcMotorEx.Direction.REVERSE);
+//        intT.setDirection(DcMotorEx.Direction.REVERSE);
     }
 
     public void ligar (){

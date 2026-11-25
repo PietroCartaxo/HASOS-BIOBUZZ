@@ -23,7 +23,7 @@ public class Ceifador {
     public Ceifador(HardwareMap hardwareMap) {
         servoLeft  = hardwareMap.get(Servo.class, "servoLeft");
         servoRight = hardwareMap.get(Servo.class, "servoRight");
-        servoRight.setDirection(Servo.Direction.REVERSE); // lado espelhado
+        servoLeft.setDirection(Servo.Direction.REVERSE); // lado espelhado
         subir();
     }
 
