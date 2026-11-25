@@ -8,11 +8,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Subsystems.Ceifador;
 import org.firstinspires.ftc.teamcode.Subsystems.IntT;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 
 @TeleOp(name = "FieldCentric RR")
 public class FieldCentricRR extends LinearOpMode {
+
+    private static final double LIMIAR_TRIGGER = 0.1;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -20,6 +23,7 @@ public class FieldCentricRR extends LinearOpMode {
         // ---------- SUBSYSTEMS ----------
         Shooter shooter = new Shooter(hardwareMap);
         IntT intT = new IntT(hardwareMap);
+        Ceifador ceifador = new Ceifador(hardwareMap);
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
@@ -43,6 +47,17 @@ public class FieldCentricRR extends LinearOpMode {
 
             drive.setDrivePowers(new PoseVelocity2d(rotated, -gamepad1.right_stick_x));
 
+            // ---------- SHOOTER ----------
+            if (gamepad1.right_trigger > LIMIAR_TRIGGER) shooter.ligar();
+            else shooter.desligar();
+            shooter.update(); // todo loop, sempre
+
+            // ---------- INTAKE/TRANSFER ----------
+            if (gamepad1.left_trigger > LIMIAR_TRIGGER) intT.ligar();
+            else intT.desligar();
+
+            // ---------- CEIFADOR ----------
+            ceifador.controlar(gamepad1.right_bumper);
 
             // ---------- TELEMETRIA ----------
             telemetry.addData("RPM alvo: ", Shooter.TARGET_RPM);
@@ -51,5 +66,10 @@ public class FieldCentricRR extends LinearOpMode {
             telemetry.addData("Ângulação: ", Math.toDegrees(botHeading.toDouble()));
             telemetry.update();
         }
+
+        // ---------- FIM ----------
+        shooter.desligar();
+        shooter.update();
+        intT.desligar();
     }
 }
