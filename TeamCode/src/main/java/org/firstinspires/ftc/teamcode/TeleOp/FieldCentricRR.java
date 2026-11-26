@@ -48,13 +48,14 @@ public class FieldCentricRR extends LinearOpMode {
             drive.setDrivePowers(new PoseVelocity2d(rotated, -gamepad1.right_stick_x));
 
             // ---------- SHOOTER ----------
-            if (gamepad1.right_trigger > LIMIAR_TRIGGER) shooter.ligar();
-            else shooter.desligar();
+            shooter.atirar(gamepad1.right_trigger); // liga, espera 2s, abre portinha + intT
             shooter.update(); // todo loop, sempre
 
-            // ---------- INTAKE/TRANSFER ----------
-            if (gamepad1.left_trigger > LIMIAR_TRIGGER) intT.ligar();
-            else intT.desligar();
+            // ---------- INTAKE/TRANSFER (manual, só fora da sequência de tiro) ----------
+            if (!shooter.ocupado()) {
+                if (gamepad1.left_trigger > LIMIAR_TRIGGER) intT.ligar();
+                else intT.desligar();
+            }
 
             // ---------- CEIFADOR ----------
             ceifador.controlar(gamepad1.right_bumper);
