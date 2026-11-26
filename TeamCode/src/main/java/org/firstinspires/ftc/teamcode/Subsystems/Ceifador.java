@@ -16,8 +16,8 @@ public class Ceifador {
     private boolean baixo = false;
     private boolean botaoAnterior = false;
 
-    static final double POS_CIMA = 0.80;   // calibrar no robô
-    static final double POS_BAIXO = 0.20;  // calibrar no robô
+    static final double POS_CIMA = 0.70;   // calibrar no robô
+    static final double POS_BAIXO = 0.15;  // calibrar no robô
     static final double TEMPO_VIAGEM = 0.40; // segundos até a pá chegar
 
     public Ceifador(HardwareMap hardwareMap) {

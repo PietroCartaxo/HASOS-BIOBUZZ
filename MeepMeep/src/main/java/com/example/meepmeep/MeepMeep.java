@@ -71,7 +71,7 @@ public class MeepMeep {
     }
 
     public static void main(String[] args) throws IOException {
-        Image campo = ImageIO.read(new File("/C:/Users/elain/Downloads/Mapa Biobuzz.jpg/"));
+        Image campo = ImageIO.read(new File("C:/Users/elain/Downloads/HASOS/Mapa Biobuzz.jpg"));
         com.noahbres.meepmeep.MeepMeep meepMeep = new com.noahbres.meepmeep.MeepMeep(800);
 
         RoadRunnerBotEntity botRed = new DefaultBotBuilder(meepMeep)

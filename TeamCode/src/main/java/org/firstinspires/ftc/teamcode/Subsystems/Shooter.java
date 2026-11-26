@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -8,7 +7,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@Config
 public class Shooter {
     private DcMotorEx shooter1;
     private DcMotorEx shooter2;
@@ -29,8 +27,8 @@ public class Shooter {
     public static boolean SO_GIRAR = false;        // true = TunePIDF só gira o shooter, sem servo/intT
     public static double LIMIAR_TRIGGER = 0.1;  // gatilho acima disso = atirar
     public static double TEMPO_SPINUP = 2.0;    // segundos esperando o shooter acelerar
-    public static double SERVO_FECHADO = 0.0;   // calibrar no robô
-    public static double SERVO_ABERTO = 0.5;    // calibrar no robô
+    public static double SERVO_FECHADO = 0.15;   // calibrar no robô
+    public static double SERVO_ABERTO = 0.0;    // calibrar no robô
 
     private enum Estado { PARADO, ACELERANDO, ATIRANDO }
     private Estado estado = Estado.PARADO;
@@ -52,7 +50,7 @@ public class Shooter {
         shooter2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         servoShooter.setPosition(SERVO_FECHADO);
-        servoShooter.setDirection(Servo.Direction.REVERSE);
+//        servoShooter.setDirection(Servo.Direction.REVERSE);
     }
 
     // ---------- COMANDOS: só mudam o alvo ----------
